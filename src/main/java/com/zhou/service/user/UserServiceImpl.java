@@ -6,12 +6,32 @@ import com.zhou.dao.user.UserDaoImpl;
 import com.zhou.pojo.User;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class UserServiceImpl implements UserService {
 
     private UserDao userDao;
     public UserServiceImpl(){
         userDao = new UserDaoImpl();
+    }
+
+
+    @Override
+    public boolean updatePwd(long id, String newUserPassword) {
+
+        Connection connection = null;
+        boolean flag = false;
+        try {
+            connection = BaseAction.getConnection();
+            if(userDao.updatePwd(connection, newUserPassword,id) >0)
+                flag = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            BaseAction.close(connection,null,null);
+        }
+        return flag;
     }
 
     @Override

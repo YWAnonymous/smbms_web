@@ -9,6 +9,20 @@ import java.sql.ResultSet;
 
 public class UserDaoImpl implements UserDao {
 
+
+    @Override
+    public int updatePwd(Connection connection, String newUserPassword, long id) throws Exception {
+        PreparedStatement preparedStatement = null;
+        int row = 0;
+        if (connection != null) {
+            String sql = "update smbms_user set userPassword = ? where id = ?";
+            Object params[] = {newUserPassword, id};
+            row = BaseAction.executeUpdate(sql, params, connection, preparedStatement);
+            System.out.println("row======>" + row);
+        }
+        return row;
+    }
+
     @Override
     public User getLoginUser(Connection connection, String userCode) throws Exception {
         PreparedStatement pstm = null;
