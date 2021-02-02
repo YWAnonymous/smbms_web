@@ -8,6 +8,7 @@ import com.zhou.pojo.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 public class UserServiceImpl implements UserService {
 
@@ -16,6 +17,39 @@ public class UserServiceImpl implements UserService {
         userDao = new UserDaoImpl();
     }
 
+
+    @Override
+    public int getUserCount(String userName, int userRole) {
+        Connection connection = null;
+        int count = 0;
+        try {
+            connection = BaseAction.getConnection();
+            count = userDao.getUserCount(connection, userName, userRole);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            BaseAction.close(connection,null,null);
+        }
+
+        return count;
+    }
+
+    @Override
+    public List<User> getUserList(String userName, int userRole,int currentPageNo, int pageSize) {
+
+        Connection connection = null;
+        List<User> userList = null;
+
+        try {
+            connection = BaseAction.getConnection();
+            userList = userDao.getUserList(connection, userName, userRole,currentPageNo,pageSize);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            BaseAction.close(connection,null,null);
+        }
+        return userList;
+    }
 
     @Override
     public boolean updatePwd(long id, String newUserPassword) {
@@ -53,16 +87,4 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-
-    public static void main(String[] args) {
-        UserDao userDao = new UserDaoImpl();
-        Connection connection = BaseAction.getConnection();
-
-        try {
-            User user = userDao.getLoginUser(connection, "admin");
-            System.out.println(user);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

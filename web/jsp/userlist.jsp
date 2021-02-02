@@ -7,7 +7,7 @@
                 <span>用户管理页面</span>
             </div>
             <div class="search">
-           		<form method="get" action="${pageContext.request.contextPath }/jsp/user.do">
+           		<form method="get" autocomplete="off" action="${pageContext.request.contextPath }/jsp/user.do">
 					<input name="method" value="query" class="input-text" type="hidden">
 					 <span>用户名：</span>
 					 <input name="queryname" class="input-text"	type="text" value="${queryUserName }">
